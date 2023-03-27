@@ -2,20 +2,9 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
+const {userToJson} = require('../helpers/toJson')
 
 const router = express.Router();
-
-function toJson(token, id, username, email, is_chef) {
-  return {
-    token,
-    user: {
-      id,
-      username,
-      email,
-      is_chef,
-    },
-  };
-}
 
 router.post("/register", async (req, res) => {
   try {
@@ -50,7 +39,7 @@ router.post("/register", async (req, res) => {
 
     user.token = token;
 
-    res.status(201).json(toJson(user.token, user.id, user.username, user.email, user.is_chef));
+    res.status(201).json(userToJson(user.token, user.id, user.username, user.email, user.is_chef));
   } catch (err) {
     console.log(err);
   }
@@ -77,7 +66,8 @@ router.post("/login", async (req, res) => {
       );
 
       user.token = token;
-      res.status(201).json(toJson(user.token, user.id, user.username, user.email, user.is_chef));
+      res.status(201).json(userToJson(user.token, user.id, user.username, user.email, user.is_chef));
+      // console.log(req.headers)
     } else {
       res.status(400).send("Les données sont incorrectes");
     }
@@ -85,5 +75,6 @@ router.post("/login", async (req, res) => {
     console.log(err);
   }
 });
+
 
 module.exports = router;

@@ -14,10 +14,15 @@ router.post("/register", async (req, res) => {
       return res.status(400).send("All fields must be filled");
     }
 
-    const oldUser = await User.findOne({ email });
+    const oldUser = await User.findOne({ email }) 
+    const usernameExists = await User.findOne({username})
 
     if (oldUser) {
       return res.status(409).send("Email Already Exist. Please Login");
+    }
+    if(usernameExists) 
+    {
+      return res.status(409).send("Username Already Used");
     }
 
     const encryptedPassword = await bcrypt.hash(password, 10);
@@ -48,13 +53,13 @@ router.post("/register", async (req, res) => {
 // Login
 router.post("/login", async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const {  email, password } = req.body;
 
     if (!(email && password)) {
       res.status(400).send("All input is required");
     }
 
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email }) 
 
     if (user && (await bcrypt.compare(password, user.password))) {
       const token = jwt.sign(
@@ -67,7 +72,6 @@ router.post("/login", async (req, res) => {
 
       user.token = token;
       res.status(201).json(userToJson(user.token, user.id, user.username, user.email, user.is_chef));
-      // console.log(req.headers)
     } else {
       res.status(400).send("Les données sont incorrectes");
     }

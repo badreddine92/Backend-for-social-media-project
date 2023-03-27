@@ -11,7 +11,11 @@ const recipeSchema = new mongoose.Schema({
     ingredients:[{type : String}],
     instructions:{
         type : String
-    }
+    },
+    recipePicture : {
+        type: String,
+        default: '',
+      },
   },
   {collection: 'recipes'});
   

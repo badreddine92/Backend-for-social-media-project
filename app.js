@@ -10,7 +10,7 @@ const app = express();
 app.use(express.json());
 
 app.use("/", authRouter);
-app.use('/' , recipeRouter)
+app.use('/recipes' , recipeRouter)
 app.use('/' , profileRouter)
 
 connect();

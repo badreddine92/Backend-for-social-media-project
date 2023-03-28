@@ -2,6 +2,7 @@ const express = require("express");
 const Recipe = require('../models/recipe');
 const User = require('../models/user')
 const {verifyToken} = require('../middleware/auth')
+const mongoose = require('mongoose')
 
 const router = express.Router();
 
@@ -34,5 +35,21 @@ router.post('/add-recipe', verifyToken , async (req,res) => {
        res.status(500).send("Something went wrong");
    }
 });
+
+router.post('/:recipeId/add-favorite', verifyToken , async (req,res) =>
+{
+    const recipeId = req.params.recipeId
+    const user = await User.findById(req.user.user_id)
+
+    try {
+        user.favorites.push(recipeId)
+        await user.save()
+        return res.status(200).send('Added to favorites')
+    }catch(err)
+    {
+        console.log(err)
+        return res.status(500).send('Something went wrong')
+    }
+})
 
 module.exports = router;

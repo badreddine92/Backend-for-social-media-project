@@ -10,6 +10,18 @@ const userSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref : 'recipe',
 }],
+  followers: [{
+    type :mongoose.Schema.Types.ObjectId,
+    ref : 'user'
+  }],
+  following: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref :'user'
+  }],
+  favorites: [{ 
+    type: mongoose.Schema.Types.ObjectId,
+    ref : 'recipe',
+}],
 });
 
 module.exports = mongoose.model("user", userSchema);

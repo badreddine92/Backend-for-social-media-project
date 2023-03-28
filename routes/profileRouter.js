@@ -1,5 +1,6 @@
 const express = require('express')
 const User = require('../models/user')
+const Recipe = require('../models/recipe')
 const router = express.Router()
 const {verifyToken} = require('../middleware/auth')
 
@@ -72,16 +73,33 @@ router.get('/:username/following'  ,async (req,res ) => {
     }
 })
 
-router.get('/favorites' ,verifyToken , async (req,res) =>{
+router.post('/favorites' ,verifyToken , async (req,res) =>{
     const userId = req.user.user_id
-    console.log(userId)
     try{
         const user = await User.findOne({_id : userId})
-        console.log(user.toJSON())
         return res.status(200).json(
             {
                 "favorites" : user.favorites
             }) 
+    }catch(err)
+    {
+        console.log(err)
+        return res.status(500).send("Something went wrong")
+    }
+})
+
+router.post('/feed' , verifyToken , async (req ,res) => {
+    try 
+    {
+        const user = await User.findById(req.user.user_id)
+        const following = user.following;
+
+        const recipes = await Recipe.find({ user_id: { $in: following } })
+        .sort({ createdAt: -1 }).select('-__v')
+
+        return res.status(200).json(recipes)
+
+
     }catch(err)
     {
         console.log(err)

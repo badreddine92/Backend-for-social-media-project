@@ -39,7 +39,7 @@ router.post('/:username/follow',verifyToken, async  (req,res) => {
         return res.status(200).send(`You are now following ${followedUser.username}`)
     } catch(err)
     {
-        console.log(err)
+        console.error(err)
         res.status(500).send('Something went wrong')
     }
 })
@@ -53,7 +53,7 @@ router.get('/:username/followers',async (req,res ) => {
         });
     } catch(err)
     {
-        console.log(err)
+        console.error(err)
         return res.status(500).send('something went wrong')
     }
 })
@@ -68,7 +68,7 @@ router.get('/:username/following'  ,async (req,res ) => {
             });
     } catch(err)
     {
-        console.log(err)
+        console.error(err)
         return res.status(500).send('something went wrong')
     }
 })
@@ -83,7 +83,7 @@ router.post('/favorites' ,verifyToken , async (req,res) =>{
             }) 
     }catch(err)
     {
-        console.log(err)
+        console.error(err)
         return res.status(500).send("Something went wrong")
     }
 })
@@ -102,7 +102,7 @@ router.post('/feed' , verifyToken , async (req ,res) => {
 
     }catch(err)
     {
-        console.log(err)
+        console.error(err)
         return res.status(500).send("Something went wrong")
     }
 })

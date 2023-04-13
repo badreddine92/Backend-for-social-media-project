@@ -46,7 +46,7 @@ router.post("/register", async (req, res) => {
 
     res.status(201).json(userToJson(user.token, user.id, user.username, user.email, user.is_chef));
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 });
 
@@ -76,9 +76,15 @@ router.post("/login", async (req, res) => {
       res.status(400).send("Les données sont incorrectes");
     }
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 });
 
-
+router.get('/routes' , async (req,res) =>
+{
+  res.json({
+    'login' : '/login',
+    'register' : '/register'
+  })
+})
 module.exports = router;

@@ -31,7 +31,7 @@ router.post('/add-recipe', verifyToken , async (req,res) => {
       
         res.status(201).json(recipe.toJSON());
    } catch(err) {
-       console.log(err);
+       console.error(err);
        res.status(500).send("Something went wrong");
    }
 });
@@ -47,7 +47,7 @@ router.post('/:recipeId/add-favorite', verifyToken , async (req,res) =>
         return res.status(200).send('Added to favorites')
     }catch(err)
     {
-        console.log(err)
+        console.error(err)
         return res.status(500).send('Something went wrong')
     }
 })
@@ -61,7 +61,7 @@ router.post('/:recipeId/like' , verifyToken , async (req,res) => {
         return res.status(200).send('You liked this post')
     }catch(err)
     {
-        console.log(err)
+        console.error(err)
         return res.status(500).send('Something went wrong')
     }
 })
@@ -72,7 +72,7 @@ router.get('/:recipeId' , async(req,res) => {
     return res.status(201).json(recipe.toJSON())
 }catch(err)
 {
-    console.log(err)
+    console.error(err)
     return res.status(404).send('Recipe not found')
 }
 })
@@ -83,7 +83,7 @@ router.get('/:recipeId/liked-by' , async(req,res) => {
      return res.status(201).json(recipe)
  }catch(err)
  {
-     console.log(err)
+     console.error(err)
      return res.status(500).send('Something went wrong')
  }
  })
@@ -99,7 +99,7 @@ router.get('/:recipeId/liked-by' , async(req,res) => {
  
      }catch(err)
      {
-         console.log(err)
+         console.error(err)
          return res.status(500).send('Something went wrong')
      }
   })

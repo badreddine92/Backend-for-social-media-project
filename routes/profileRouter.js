@@ -12,9 +12,10 @@ router.get('/:username' , async (req,res) =>
 
         if(!user)
         {
-            return res.status(404).send('User not found')
+            return res.status(404).json({
+                message : "User not found",
+            })
         }
-        console.log(user.toJSON())
         return res.status(201).json(user.toJSON())
 
     } catch(err)
@@ -36,7 +37,9 @@ router.post('/:username/follow',verifyToken, async  (req,res) => {
         followedUser.followers.push(followingUser._id)
         await followedUser.save()
         await followingUser.save()
-        return res.status(200).send(`You are now following ${followedUser.username}`)
+        return res.status(200).json({
+            message : `You are now following ${followedUser.username}`,
+          })
     } catch(err)
     {
         console.error(err)

@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(cors());
 app.use("/", authRouter);
 app.use('/recipes' , recipeRouter)
-app.use('/' , profileRouter)
+app.use('/profile' , profileRouter)
 
 connect();
 

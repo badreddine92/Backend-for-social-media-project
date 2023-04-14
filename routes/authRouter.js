@@ -11,18 +11,24 @@ router.post("/register", async (req, res) => {
     const { username, email, password, is_chef } = req.body;
 
     if (!(email && password && username && is_chef !== undefined && is_chef !== null)) {
-      return res.status(400).send("All fields must be filled");
+      return res.status(400).json({
+        message : "All fields must be filled",
+      })
     }
 
     const oldUser = await User.findOne({ email }) 
     const usernameExists = await User.findOne({username})
 
     if (oldUser) {
-      return res.status(409).send("Email Already Exist. Please Login");
+      return res.status(409).json({
+        message : "Email already used, please login",
+      })
     }
     if(usernameExists) 
     {
-      return res.status(409).send("Username Already Used");
+      return res.status(409).json({
+        message : "Username already used",
+      })
     }
 
     const encryptedPassword = await bcrypt.hash(password, 10);
@@ -56,7 +62,9 @@ router.post("/login", async (req, res) => {
     const {  email, password } = req.body;
 
     if (!(email && password)) {
-      res.status(400).send("All input is required");
+      res.status(400).json({
+        message : "All input is required",
+      });
     }
 
     const user = await User.findOne({ email }) 
@@ -73,7 +81,9 @@ router.post("/login", async (req, res) => {
       user.token = token;
       res.status(201).json(userToJson(user.token, user.id, user.username, user.email, user.is_chef));
     } else {
-      res.status(400).send("Les données sont incorrectes");
+      res.status(400).json({
+        message : "Username or password incorrect",
+      })
     }
   } catch (err) {
     console.error(err);

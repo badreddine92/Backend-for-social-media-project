@@ -11,7 +11,9 @@ router.post('/add-recipe', verifyToken , async (req,res) => {
         const user_id = req.user.user_id;
         const { title , ingredients , instructions , recipePicture } = req.body
         if (!(title && ingredients && instructions && recipePicture)) {
-            return res.status(400).send("All fields must be filled");
+            return res.status(400).json({
+                message : "All fields must be filled",
+              })
         }
         
         const recipe = await Recipe.create({
@@ -44,7 +46,9 @@ router.post('/:recipeId/add-favorite', verifyToken , async (req,res) =>
     try {
         user.favorites.push(recipeId)
         await user.save()
-        return res.status(200).send('Added to favorites')
+        return res.status(200).json({
+            message : "Added to favorites",
+          })
     }catch(err)
     {
         console.error(err)
@@ -58,7 +62,9 @@ router.post('/:recipeId/like' , verifyToken , async (req,res) => {
     try{
         recipe.likes.push(userId)
         await recipe.save()
-        return res.status(200).send('You liked this post')
+        return res.status(200).json({
+            message : "You liked this post",
+          })
     }catch(err)
     {
         console.error(err)
@@ -66,15 +72,20 @@ router.post('/:recipeId/like' , verifyToken , async (req,res) => {
     }
 })
 
-router.get('/:recipeId' , async(req,res) => {
+router.get('/:recipeId' , async (req,res) => {
    try {
-    const recipe = await Recipe.findById(req.params.recipeId).select('-__v')
+    const recipe_id = req.params.recipeId
+    console.log(recipe_id)
+    const recipe = await Recipe.findById(recipe_id).select('-__v')
     return res.status(201).json(recipe.toJSON())
-}catch(err)
-{
-    console.error(err)
-    return res.status(404).send('Recipe not found')
-}
+    }
+    catch(err)
+    {
+        console.error(err)
+        return res.status(404).json({
+            message : "Recipe not found",
+        })
+    }
 })
 
 router.get('/:recipeId/liked-by' , async(req,res) => {
@@ -95,7 +106,7 @@ router.get('/:recipeId/liked-by' , async(req,res) => {
       const comment = {comment: req.body.comment , user: req.user.user_id}
       recipe.comments.push(comment);
       await recipe.save();
-      return res.status(200).json({massage: 'Comment added succes' , comment})
+      return res.status(200).json({massage: 'Comment added' , comment})
  
      }catch(err)
      {

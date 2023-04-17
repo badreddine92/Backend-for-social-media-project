@@ -8,10 +8,15 @@ const recipeSchema = new mongoose.Schema({
     title: { 
         type: String
     },
-    ingredients:[{type : String}],
-    instructions:{
+    ingredients: [
+        {
+          title: { type: String, required: true },
+          weight: { type: Number, required: true },
+          unit: { type: String }
+        }],
+    instructions:[{
         type : String
-    },
+    }],
     recipePicture : {
         type: String,
         default: '',

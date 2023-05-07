@@ -101,7 +101,7 @@ router.post('/:recipeId/like' , verifyToken , async (req,res) => {
     const userId = req.user.user_id
     const user = await User.findById(userId)
     try{
-        createNotifications(recipe.user_id,'like' , recipe._id, userId, null)
+        createNotifications(recipe.username,'like' , recipe._id, userId, null)
         recipe.likes.push(user.username)
         await recipe.save()
         return res.status(200).json({
@@ -161,6 +161,30 @@ router.get('/:recipeId/liked-by' , async(req,res) => {
      }
   })
 
+  router.put('/:id/edit', verifyToken, async (req, res, next) => {
+    const { title, description, preparation_time , nbr_personne, ingredients, instructions } = req.body;
+    try {
+        const recipe = await Recipe.findByIdAndUpdate(req.params.id, {
+            $set: {
+                title: title,
+                description: description,
+                preparation_time: preparation_time,
+                cook_time: cook_time,
+                nbr_personne: nbr_personne,
+                ingredients: ingredients,
+                instructions: instructions
+            }
+        }, { new: true })
+        res.status(200).json({ message: 'recipe has been updated succesfully', recipe });
+
+
+    }
+    catch (err) {
+        (err) => {
+            res.status(500).json({ message : "Something went wrong" })
+        }
+    }
+});
  
  
 

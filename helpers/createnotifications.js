@@ -1,8 +1,8 @@
 const user = require('../models/user')
 
-const createNotifications = async (receiverId, type, recipeId = null, senderId = null, commentId = null) => {
+const createNotifications = async (receiverUsername, type, recipeId = null, senderId = null, commentId = null) => {
     try {
-      const receiver = await user.findById(receiverId);
+      const receiver = await user.find({username : receiverUsername});
       if (!receiver) throw new Error('User not found');
       const sender = await user.findById(senderId);
       if(!sender) throw new Error('Follower does not exist')

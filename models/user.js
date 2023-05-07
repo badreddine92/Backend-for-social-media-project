@@ -20,6 +20,10 @@ const userSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref : 'recipe',
 }],
+profilePicture: {
+  data: Buffer,
+  contentType: String
+},
 notifications: {
   type: [{
     body: String,

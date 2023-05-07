@@ -1,12 +1,23 @@
 const mongoose = require('mongoose')
 
 const recipeSchema = new mongoose.Schema({
-    user_id: { 
-        type: mongoose.Schema.Types.ObjectId,
-        ref : 'user',
+    username: { 
+       type : String,
+       required : true
     },
     title: { 
+        type: String,
+        required : true
+    },
+    descrption: {
         type: String
+    },
+    preparation_time: {
+        type: String
+    },
+
+    nbr_personne :{
+        type : Number
     },
     ingredients: [
         {
@@ -17,13 +28,19 @@ const recipeSchema = new mongoose.Schema({
     instructions:[{
         type : String
     }],
-    recipePicture : {
-        type: String,
-        default: '',
+
+    categorie:{
+        type : String
+    },
+    recipePicture: {
+        data: Buffer,
+        contentType: String
       },
+    
     likes : [
-        {type : mongoose.Schema.Types.ObjectId,
-        ref : 'user'}],
+        {
+            type : String
+        }],
      comments: [
         {
                 comment: {
@@ -31,8 +48,7 @@ const recipeSchema = new mongoose.Schema({
                     required: true
                 },
                 user: {
-                    type: mongoose.Schema.Types.ObjectId,
-                    ref: 'user',
+                   type : String,
                     required: true
                 },
                 time: {

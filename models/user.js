@@ -11,17 +11,25 @@ const userSchema = new mongoose.Schema({
     ref : 'recipe',
 }],
   followers: [{
-    type :mongoose.Schema.Types.ObjectId,
-    ref : 'user'
+    type : String
   }],
   following: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref :'user'
+    type : String
   }],
   favorites: [{ 
     type: mongoose.Schema.Types.ObjectId,
     ref : 'recipe',
 }],
+notifications: {
+  type: [{
+    body: String,
+    type: String,
+    recipeId: { type: mongoose.Schema.Types.ObjectId, ref: 'recipe' },
+    senderId: { type: mongoose.Schema.Types.ObjectId, ref: 'user' },
+    date: { type: Date, default: Date.now }
+  }],
+  default: []
+}
 });
 
 module.exports = mongoose.model("user", userSchema);
